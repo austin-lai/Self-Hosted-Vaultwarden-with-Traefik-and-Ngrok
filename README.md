@@ -326,8 +326,6 @@ services:
 
 </details>
 
-<br>
-
 <span style="color: red; font-weight: bold;">Things to take note:</span>
 
 - <span style="color: green; font-weight: bold;">Please replace the naming of "example-network" to the name you want across the docker compose file and also </span><span style="color: red">in the labels!</span>
@@ -380,15 +378,11 @@ tunnels:
 
 </details>
 
-<br>
-
 Please REPLACE the following with the configuration from NGROK:
 
 - "name"
 - "edge"
 - "authtoken"
-
-<br>
 
 You cane refer to the official guide:
 
@@ -434,8 +428,6 @@ services:
 ```
 
 </details>
-
-<br>
 
 <span style="color: red; font-weight: bold;">Things to take note:</span>
 
