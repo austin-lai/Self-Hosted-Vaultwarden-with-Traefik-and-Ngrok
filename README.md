@@ -25,8 +25,9 @@
         - [NGROK Account](#ngrok-account)
         - [ngrok docker compose file](#ngrok-docker-compose-file)
         - [env file](#env-file)
-        - [init.sh file](#initsh-file)
-        - [init.py file](#initpy-file)
+        - [init script](init-script)
+            - [init.sh file](#initsh-file)
+            - [init.py file](#initpy-file)
 
 <!-- /TOC -->
 
@@ -555,6 +556,17 @@ NGROK_CONTAINER_NAME=ngrok
 ```
 
 </details>
+
+<br>
+
+## init script
+
+There are two different flavors of the init script - Bash/Shell and Python Script.
+
+Both do the same thing; it's just a matter of your preference.
+
+- [init.sh file](#initsh-file)
+- [init.py file](#initpy-file)
 
 <br>
 
