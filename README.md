@@ -25,7 +25,7 @@
         - [NGROK Account](#ngrok-account)
         - [ngrok docker compose file](#ngrok-docker-compose-file)
         - [env file](#env-file)
-        - [init script](init-script)
+        - [init script](#init-script)
             - [init.sh file](#initsh-file)
             - [init.py file](#initpy-file)
 
