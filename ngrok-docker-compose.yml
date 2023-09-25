@@ -1,0 +1,25 @@
+version: "3.9"
+
+networks:
+  example-network:
+    external: true
+
+services:
+  ngrok:
+    image: ${NGROK_IMAGE_TAG}
+    container_name: ${NGROK_CONTAINER_NAME}
+    security_opt:
+      - no-new-privileges:${NO_NEW_PRIVILEGES}
+    restart: ${RESTART_STATUS}
+    command:
+      - "start"
+      - "--all"
+      - "--config"
+      - "/etc/ngrok.yml"
+    volumes:
+      - ./ngrok/ngrok.yml:/etc/ngrok.yml
+      - ./ngrok/ngrok.log:/var/log/ngrok.log
+    networks:
+      - example-network
+    ports:
+      - 8888:4040

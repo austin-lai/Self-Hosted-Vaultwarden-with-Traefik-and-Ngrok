@@ -1,0 +1,21 @@
+authtoken: YOUR_AUTHTOKEKN_HERE
+connect_timeout: 30s
+console_ui: true
+console_ui_color: transparent
+dns_resolver_ips:
+  - 1.1.1.1
+  - 8.8.8.8
+heartbeat_interval: 1m
+heartbeat_tolerance: 5s
+inspect_db_size: 50000000 # 50MB
+log_level: info
+log_format: json
+log: /var/log/ngrok.log
+metadata: '{"name": "example"}'
+version: 2
+web_addr: localhost:4040
+tunnels:
+  shbwvwwnat:
+    labels:
+      - edge=YOUR_EDGE_NAME
+    addr: http://vaultwarden:80

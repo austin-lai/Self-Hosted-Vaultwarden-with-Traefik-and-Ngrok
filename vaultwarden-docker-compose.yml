@@ -1,0 +1,138 @@
+version: "3.9"
+
+networks:
+  example-network:
+    name: example-network
+    driver: bridge
+
+services:
+  vaultwarden:
+    image: ${VAULTWARDEN_IMAGE_TAG}
+    container_name: ${VAULTWARDEN_CONTAINER_NAME}
+    volumes:
+      - "./vaultwarden:/data/" # Map the "vaultwarden" directory from Windows host to "/data/" in container.
+    environment:
+      - ADMIN_TOKEN=${ADMIN_TOKEN} # Disable admin page by not issue any admin token
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_FROM=${SMTP_FROM}
+      - SMTP_SECURITY=${SMTP_SECURITY} # The security method used by your SMTP server. Possible values: “starttls” / “force_tls” / “off”.
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - LOGIN_RATELIMIT_MAX_BURST=10
+      - LOGIN_RATELIMIT_SECONDS=60
+      - ADMIN_RATELIMIT_MAX_BURST=10
+      - ADMIN_RATELIMIT_SECONDS=60
+      - SENDS_ALLOWED=${SENDS_ALLOWED} # This setting determines whether users are allowed to create Bitwarden Sends – a form of credential sharing.
+      - SIGNUPS_ALLOWED = ${SIGNUPS_ALLOWED} # This setting controls whether or not new users can register for accounts without an invitation. Possible values: true / false. Can change to false to disable anyone create account - for better security
+      - SIGNUPS_VERIFY=${SIGNUPS_VERIFY} # This setting determines whether or not new accounts must verify their email address before being able to login to Vaultwarden. Possible values: true / false.
+      - SIGNUPS_VERIFY_RESEND_TIME=${SIGNUPS_VERIFY_RESEND_TIME}
+      - SIGNUPS_VERIFY_RESEND_LIMIT=${SIGNUPS_VERIFY_RESEND_LIMIT}
+      - SIGNUPS_DOMAINS_WHITELIST=${SIGNUPS_DOMAINS_WHITELIST}
+      - EMERGENCY_ACCESS_ALLOWED=${EMERGENCY_ACCESS_ALLOWED} # This setting controls whether users can enable emergency access to their accounts. This is useful, for example, so a spouse can access a password vault in the event of death so they can gain access to account credentials. Possible values: true / false.
+      - WEBSOCKET_ENABLED=${WEBSOCKET_ENABLED}
+      - WEB_VAULT_ENABLED=${WEB_VAULT_ENABLED} # This setting determines whether or not the web vault is accessible. Stopping your container then switching this value to false and restarting Vaultwarden could be useful once you’ve configured your accounts and clients to prevent unauthorized access. Possible values: true/false.
+      - DOMAIN=${DOMAIN}
+      - LOG_FILE=${LOG_FILE}
+      - INVITATIONS_ALLOWED=${INVITATIONS_ALLOWED}
+      - SHOW_PASSWORD_HINT=${SHOW_PASSWORD_HINT}
+      - PASSWORD_HINTS_ALLOWED=${PASSWORD_HINTS_ALLOWED}
+      - PUSH_ENABLED=${PUSH_ENABLED}
+      - PUSH_INSTALLATION_ID=${PUSH_INSTALLATION_ID}
+      - PUSH_INSTALLATION_KEY=${PUSH_INSTALLATION_KEY}
+    restart: ${RESTART_STATUS}
+    networks:
+      - example-network
+    ports:
+      - 8880:80
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    depends_on:
+      traefik:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:${NO_NEW_PRIVILEGES}
+    labels:
+      - traefik.enable=${TRAEFIK_ENABLE}
+      - traefik.http.routers.vaultwarden.rule=Host(`${VAULTWARDEN_HOSTNAME}`)
+      - traefik.http.routers.vaultwarden.service=vaultwarden
+      - traefik.http.routers.vaultwarden.entrypoints=websecure
+      - traefik.http.services.vaultwarden.loadbalancer.server.port=80
+      - traefik.http.routers.vaultwarden.tls=true
+      - traefik.http.routers.vaultwarden.tls.certresolver=letsencrypt
+      - traefik.http.services.vaultwarden.loadbalancer.passhostheader=true
+      - traefik.http.routers.vaultwarden.middlewares=compresstraefik
+      - traefik.http.middlewares.compresstraefik.compress=true
+      - traefik.docker.network=example-network
+
+
+
+  traefik:
+    image: ${TRAEFIK_IMAGE_TAG}
+    container_name: ${TRAEFIK_CONTAINER_NAME}
+    security_opt:
+      - no-new-privileges:${NO_NEW_PRIVILEGES}
+    restart: ${RESTART_STATUS}
+    environment:
+      - DUCKDNS_TOKEN=${DUCKDNS_TOKEN}
+    command:
+      - --log.level=${TRAEFIK_LOG_LEVEL}
+      - --accesslog=${ACCESS_LOG}
+      - --api.dashboard=${API_DASHBOARD}
+      - --api.insecure=${API_INSECURE}
+      - --ping=${PING_ENABLED}
+      - --ping.entrypoint=${PING_ENTRYPOINT}
+      - --entryPoints.ping.address=${ENTRYPOINTS_PING_ADDRESS}
+      - --entryPoints.web.address=${ENTRYPOINTS_WEB_ADDRESS}
+      - --entryPoints.websecure.address=${ENTRYPOINTS_WEBSECURE_ADDRESS}
+      - --providers.docker=${PROVIDERS_DOCKER}
+      - --providers.docker.endpoint=unix:///var/run/docker.sock
+      - --providers.docker.exposedByDefault=${PROVIDERS_DOCKER_EXPOSEDBYDEFAULT}
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge=${CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_DNSCHALLENGE}
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=${DNSCHALLENGE_PROVIDER}
+      - --certificatesresolvers.letsencrypt.acme.caserver=${LETSENCRYPT_ACME_CASERVER}
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=${LETSENCRYPT_ACME_DNSCHALLENGE_RESOLVERS}
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge.delayBeforeCheck=${LETSENCRYPT_ACME_DNSCHALLENGE_DELAYBEFORECHECK}
+      - --certificatesresolvers.letsencrypt.acme.email=${TRAEFIK_ACME_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=${LETSENCRYPT_ACME_STORAGE}
+      - --global.checkNewVersion=${GLOBAL_CHECKNEWVERSION}
+      - --global.sendAnonymousUsage=${GLOBAL_SENDANONYMOUSUSAGE}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik-config/acme.json:/acme.json
+      - ./traefik/traefik-config/config.yml:/config.yml:ro
+      - ./traefik/logs:/var/log/traefik
+    networks:
+      - example-network
+    ports:
+      - 80:80
+      - 443:443
+    healthcheck:
+      test: ["CMD", "wget", "http://localhost:8082/ping","--spider"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    labels:
+      - traefik.enable=${TRAEFIK_ENABLE}
+      - traefik.docker.network=example-network
+      - traefik.http.routers.dashboard.rule=Host(`${TRAEFIK_HOSTNAME}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`)) # Must be /dashboard/ or /api/ only the authentication will happen
+      - traefik.http.routers.dashboard.entrypoints=websecure
+      - traefik.http.routers.dashboard.service=api@internal
+      - traefik.http.routers.dashboard.tls=true
+      - traefik.http.routers.dashboard.tls.certresolver=letsencrypt
+      - traefik.http.routers.dashboard.middlewares=authtraefik
+      - traefik.http.services.dashboard.loadbalancer.server.port=8080
+      - traefik.http.services.dashboard.loadbalancer.passhostheader=true
+      - traefik.http.middlewares.authtraefik.basicauth.users=${TRAEFIK_BASIC_AUTH}
+      - traefik.http.routers.http-catchall.rule=HostRegexp(`{host:.+}`)
+      - traefik.http.routers.http-catchall.entrypoints=web
+      - traefik.http.routers.http-catchall.middlewares=redirect-to-https
+      - traefik.http.routers.traefik-secure.tls.domains[0].main=shbwvwwnat.duckdns.org
+      - traefik.http.routers.traefik-secure.tls.domains[0].sans=*.shbwvwwnat.duckdns.org
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
