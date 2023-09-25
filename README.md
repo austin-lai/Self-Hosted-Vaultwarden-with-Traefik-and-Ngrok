@@ -5,6 +5,7 @@
 > -----------| September 22nd, 2023
 > -----------| Updated on September 25th, 2023
 ```
+
 ---
 
 ## Table of Contents
@@ -586,8 +587,6 @@ Options:
        -h:  Display this help message (--help, /?)
 ```
 
-<br>
-
 <span style="color: red; font-weight: bold;">Please note that:</span>
 
 - IN WINDOWS HOST
@@ -598,6 +597,8 @@ Options:
   ```
 
 - <span style="color: red; font-weight: bold;">Note</span> that the `init.sh` file should be in the same directory as  `ngrok-docker-compose.yml` and `vaultwarden-docker-compose.yml`.
+
+<br>
 
 The `init.sh` file can be found [here](./init.sh) or below:
 
