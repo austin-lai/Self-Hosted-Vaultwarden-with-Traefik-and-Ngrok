@@ -26,6 +26,7 @@
         - [ngrok docker compose file](#ngrok-docker-compose-file)
         - [env file](#env-file)
         - [init.sh file](#initsh-file)
+        - [init.py file](#initpy-file)
 
 <!-- /TOC -->
 
