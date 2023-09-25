@@ -1,9 +1,10 @@
 # Self-Hosted Vaultwarden with Traefik, DuckDNS, Let's Encrypt and Ngrok
 
+```markdown
 > Austin.Lai |
 > -----------| September 22nd, 2023
 > -----------| Updated on September 25th, 2023
-
+```
 ---
 
 ## Table of Contents
