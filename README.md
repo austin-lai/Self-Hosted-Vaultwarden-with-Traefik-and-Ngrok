@@ -59,6 +59,8 @@ This project/repository is a local setup of <span style="color: red; font-weight
         - One for <span style="color: green; font-weight: bold;">vaultwarden & traefik (vaultwarden-docker-compose.yml)</span>.
     - Please change the configuration accordingly to suits your hosting environment.
 
+<!-- /Description -->
+
 <br>
 
 This project/repository has the following files and directories in the structure as below:
