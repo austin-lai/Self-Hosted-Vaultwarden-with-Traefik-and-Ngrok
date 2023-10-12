@@ -1,11 +1,10 @@
 #! /usr/bin/python3
-
-# OR 
 #! /usr/bin/env python3
 
 # Description:
 #      This is a helper script for managing Docker containers.
 #      This script will START or STOP the container specified in the selected docker compose file.
+#      It can also pull the latest image for the selected docker compose file.
 
 # Usage:
 #      ./docker_helper.py [file] [command]
@@ -16,10 +15,14 @@
 #                 using {vaultwarden_path}.
 #                *ngrok - Start Ngrok container using
 #                 {ngrok_path}.
-#   command: The command to execute (up, down)
+#   command: The command to execute (up, down, pull)
 #                *up - docker-compose -f [file] up --timestamps --wait --detach
 #                *down - docker-compose -f [file] down
+#                *pull - docker-compose -f [file] pull
 #        -h: Display this help message (--help, /?)
+
+
+# vaultwarden2=wsl bash -c "cd /mnt/d/Software_install/shbwvwwnat && ./test.py $*"
 
 
 import sys
@@ -44,6 +47,7 @@ def display_help():
     print("Description:")
     print("     This is a helper script for managing Docker containers.")
     print("     This script will START or STOP the container specified in the selected docker compose file.")
+    print("     It can also pull the latest image for the selected docker compose file.")
     print("Usage:")
     print("     ./docker_helper.py [file] [command]")
     print("Options:")
@@ -52,9 +56,10 @@ def display_help():
     print(f"                using {vaultwarden_path}.")
     print("               *ngrok - Start Ngrok container using")
     print(f"                {ngrok_path}.")
-    print("  command: The command to execute (up, down)")
+    print("  command: The command to execute (up, down, pull)")
     print("               *up - docker-compose -f [file] up --timestamps --wait --detach")
     print("               *down - docker-compose -f [file] down")
+    print("               *pull - docker-compose -f [file] pull")
     print("       -h: Display this help message (--help, /?)")
     sys.exit(0)
 
@@ -87,6 +92,11 @@ def stop_container(file, name):
     subprocess.run(
         ["docker-compose", "-f", file, "down"]
     )
+
+
+# Define a function to pull Docker images for a selected file
+def pull_images(file):
+    subprocess.run(["docker-compose", "-f", file, "pull"])
 
 
 # Define a function to prompt user enter yes or no for confirmation of next action
@@ -143,8 +153,13 @@ if valid_arg1:
         sys.exit(1)
     else:
         arg2 = sys.argv[2]
+
+        # Add pull image action here:
+        if arg2 == "pull":
+            pull_images(selected_file)
+
         # Execute the command based on the second argument
-        if arg2 == "up":
+        elif arg2 == "up":
             if arg1 == "vaultwarden":
                 # Check if vaultwarden container is already running
                 if is_container_running("vaultwarden"):
