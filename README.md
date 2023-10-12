@@ -766,7 +766,9 @@ The script will START or STOP the container specified in the selected docker com
 
 It can also pull the latest image for the selected docker compose file.
 
-The script description and usage as shown below:
+<details>
+
+<summary><span style="padding-left:10px;">The script description and usage as shown below:</span></summary>
 
 ```python
 # Description:
