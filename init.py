@@ -1,5 +1,5 @@
 #! /usr/bin/python3
-#! /usr/bin/env python3
+# #! /usr/bin/env python3
 
 # Description:
 #      This is a helper script for managing Docker containers.
@@ -20,9 +20,6 @@
 #                *down - docker-compose -f [file] down
 #                *pull - docker-compose -f [file] pull
 #        -h: Display this help message (--help, /?)
-
-
-# vaultwarden2=wsl bash -c "cd /mnt/d/Software_install/shbwvwwnat && ./test.py $*"
 
 
 import sys
