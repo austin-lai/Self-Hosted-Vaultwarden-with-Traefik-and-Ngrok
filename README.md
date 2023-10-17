@@ -3,7 +3,7 @@
 ```markdown
 > Austin.Lai |
 > -----------| September 22nd, 2023
-> -----------| Updated on October 12th, 2023
+> -----------| Updated on October 17th, 2023
 ```
 
 ---
@@ -777,7 +777,7 @@ It can also pull the latest image for the selected docker compose file.
 #      It can also pull the latest image for the selected docker compose file.
 
 # Usage:
-#      ./docker_helper.py [file] [command]
+#      ./init.py [file] [command]
 
 # Options:
 #      file: The Docker compose file to use (vaultwarden, ngrok)
@@ -816,7 +816,7 @@ def display_help():
     print("     This script will START or STOP the container specified in the selected docker compose file.")
     print("     It can also pull the latest image for the selected docker compose file.")
     print("Usage:")
-    print("     ./docker_helper.py [file] [command]")
+    print("     ./init.py [file] [command]")
     print("Options:")
     print("     file: The Docker compose file to use (vaultwarden, ngrok)")
     print("               *vaultwarden - Start Vaultwarden container using")
