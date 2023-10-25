@@ -129,7 +129,7 @@ The `wsl.conf` file can be found [here](./wsl.conf) or below:
 enabled = true
 
 # DrvFs-specific options can be specified.
-options = "umask=077,case=off"
+options = "metadata,umask=0077,fmask=0022,case=off"
 
 
 
