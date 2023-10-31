@@ -130,6 +130,7 @@ enabled = true
 
 # DrvFs-specific options can be specified.
 options = "metadata,umask=0077,fmask=0022,case=off"
+mountFsTab = true
 
 
 
@@ -137,6 +138,26 @@ options = "metadata,umask=0077,fmask=0022,case=off"
 [user]
 # CHANGE HERE !!!
 default = YOUR_WSL_USER
+
+
+# To enable systemd
+# You can confirm using the command
+# systemctl list-unit-files --type=service
+[boot]
+systemd=true
+
+
+# Set whether WSL supports interop process like launching Windows apps and adding path variables. Setting these to false will block the launch of Windows processes and block adding $PATH environment variables.
+[interop]
+enabled = false
+appendWindowsPath = false
+
+
+# Network host settings that enable the DNS server used by WSL 2. This example changes the hostname, sets generateHosts to false, preventing WSL from the default behavior of auto-generating /etc/hosts, and sets generateResolvConf to false, preventing WSL from auto-generating /etc/resolv.conf, so that you can create your own (ie. nameserver 1.1.1.1).
+# [network]
+# hostname = DemoHost
+# generateHosts = false
+# generateResolvConf = false
 ```
 
 <br>
