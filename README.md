@@ -792,6 +792,9 @@ It can also pull the latest image for the selected docker compose file.
 <summary><span style="padding-left:10px;">The script description and usage as shown below:</span></summary>
 
 ```python
+#! /usr/bin/python3
+# #! /usr/bin/env python3
+
 # Description:
 #      This is a helper script for managing Docker containers.
 #      This script will START or STOP the container specified in the selected docker compose file.
@@ -882,9 +885,25 @@ def stop_container(file, name):
     )
 
 
+
+
+# Define a function to run command
+def run_command(command):
+    try:
+        subprocess.run(command, check=True, shell=True, executable='/bin/bash')
+    except subprocess.CalledProcessError as e:
+        print(f"Error running command '{command}': {e}")
+
+
+
+
 # Define a function to pull Docker images for a selected file
 def pull_images(file):
+    # run_command('sudo -S <<< "kali" apt update -y')
+    # run_command('sudo -S <<< "kali" apt install -y gnupg2 pass')
     subprocess.run(["docker-compose", "-f", file, "pull"])
+
+
 
 
 # Define a function to prompt user enter yes or no for confirmation of next action
