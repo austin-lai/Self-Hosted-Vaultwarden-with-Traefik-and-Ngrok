@@ -3,7 +3,7 @@
 ```markdown
 > Austin.Lai |
 > -----------| September 22nd, 2023
-> -----------| Updated on October 17th, 2023
+> -----------| Updated on November 10th, 2023
 ```
 
 ---
