@@ -1,0 +1,38 @@
+# Settings apply across all Linux distros running on WSL 2
+[wsl2]
+
+# Limits VM memory to use no more than 4 GB, this can be set as whole numbers using GB or MB
+memory=1GB
+
+# Sets the VM to use two virtual processors
+processors=2
+
+# Sets amount of swap storage space to 8GB, default is 25% of available RAM
+swap=4GB
+
+# Sets swapfile path location, default is %USERPROFILE%\AppData\Local\Temp\swap.vhdx
+swapfile=C:\\austin-tools\\wsl-docker-image\\wsl-swap.vhdx
+
+# Turn off default connection to bind WSL 2 localhost to Windows localhost
+# Boolean specifying if ports bound to wildcard or localhost in the WSL 2 VM should be connectable from the host via localhost:port.
+localhostforwarding=true
+
+# Boolean to turn on or off support for GUI applications (WSLg) in WSL. Only available for Windows 11.
+guiApplications=true
+
+# Disable page reporting so WSL retains all allocated memory claimed from Windows and releases none back when free
+# pageReporting=true
+
+vmIdleTimeout=6000
+
+
+
+
+
+# Enable experiemntal features
+[experimental]
+sparseVhd=true
+autoMemoryReclaim=dropcache 
+# networkingMode=mirrored 
+# dnsTunneling=true
+autoProxy=true
